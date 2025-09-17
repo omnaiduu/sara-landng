@@ -23,10 +23,11 @@ export default function App() {
   }
 
   const childVariants: Variants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 15, scale: 0.95 }, // added scale for zoom-in effect
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1, // added scale for zoom-in effect
       transition: {
         duration: 0.2,
         ease: "easeOut",
@@ -39,17 +40,17 @@ export default function App() {
     {
       icon: Target,
       title: "Custom Content Creation",
-      desc: "Tailored plans with 4 video reels or 4 static posts + 2 carousels per month, including SEO, free festive posts/stories, and multi-platform posting.",
+      desc: "Tailored plans with video reels, static posts, and carousels per month, including SEO, free festive stories, and seamless multi-platform posting to boost your engagement.", // removed prices, made more engaging
     },
     {
       icon: BarChart3,
       title: "Design & Editing Excellence",
-      desc: "Logos from ₹3,500 onwards with up to 3 revisions; graphics like single posts, banners, brochures, pitch decks, company profiles, and content writing.",
+      desc: "Logos and graphics with expert revisions; from single posts to banners, brochures, pitch decks, profiles, and content writing for a polished brand identity.", // removed prices, made more benefit-focused
     },
     {
       icon: Zap,
       title: "Website Solutions",
-      desc: "Basic 4-page sites at ₹25,000 or e-commerce at ₹35,000, including 1st-year host and domain, SEO, data compilation, and custom features.",
+      desc: "Custom 4-page sites or full e-commerce setups with hosting, domain, SEO, data compilation, and tailored features for seamless online presence.", // removed prices, made more attractive
     },
   ]
 
@@ -295,7 +296,7 @@ export default function App() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-                <span>GST Not Included</span>
+                <span>We Include GST</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
@@ -334,25 +335,33 @@ export default function App() {
               Comprehensive Creative Services
             </h2>
             <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
-              We deliver modern, scalable solutions for brands.
+              We deliver modern, scalable solutions that turn ideas into impactful brands.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
             {benefits.map((benefit, idx) => (
               <motion.div
                 key={idx}
                 variants={childVariants}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, y: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="p-6 sm:p-8 h-full hover:shadow-lg transition-all duration-300 border-slate-200 hover:border-emerald-300">
+                <Card className="p-6 sm:p-8 h-auto min-h-[300px] shadow-md hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-emerald-300">
                   <CardContent className="p-0">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
-                      <benefit.icon className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600" />
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">{benefit.title}</h3>
-                    <p className="text-slate-600 leading-relaxed text-sm sm:text-base lg:text-lg">{benefit.desc}</p>
+                    <motion.div
+                      className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6"
+                      whileHover={{ rotate: 5 }}
+                    >
+                      <benefit.icon className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-600" />
+                    </motion.div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-emerald-600 after:to-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed text-sm sm:text-base lg:text-lg ">
+                      <strong>{benefit.desc.split(".")[0]}.</strong>
+                      {benefit.desc.split(".").slice(1).join(".")}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -436,9 +445,7 @@ export default function App() {
 
           <motion.div className="mt-8 sm:mt-12 text-center" variants={childVariants}>
             <p className="text-xs sm:text-sm text-slate-600 max-w-4xl mx-auto leading-relaxed">
-              <strong>Note:</strong> GST not included. Host/domain prices for 1st year only (may vary after). Additional
-              pages/features (e.g., blogs, online payments) charged separately. Content provided by client where noted.
-              Total cost for logos depends on the type of logo.
+              <strong>Note:</strong> GST not included in all quotes
             </p>
           </motion.div>
         </div>
@@ -707,7 +714,7 @@ export default function App() {
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-800">
             <p className="text-slate-400 mb-4 md:mb-0">&copy; 2025 Sara Creations. All rights reserved.</p>
-            <p className="text-slate-400 mb-4 md:mb-0 text-sm">GST not included in all quotes</p>
+            <p className="text-slate-400 mb-4 md:mb-0 text-sm">GST included in all quotes</p>
             <div className="flex gap-8">
               <a href="#" className="text-slate-400 hover:text-emerald-400 transition-colors">
                 Contact
