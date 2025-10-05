@@ -21,7 +21,7 @@ export default defineConfig({
       ],
     }),
     nitroV2Plugin({
-      preset: "vecrel",
+      preset: "vercel",
     }),
     viteReact(),
     tailwindcss(),
