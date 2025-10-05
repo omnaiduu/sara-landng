@@ -12,7 +12,7 @@ import { MessageCircle, X, Send, Sparkles } from "lucide-react"
 import { Response } from "@/src/components/ai-elements/response"
 
 
-import { google } from '@ai-sdk/google';
+
 import {
   Conversation,
   ConversationContent,

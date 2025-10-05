@@ -6,7 +6,7 @@ import {
   type UIMessage,
 } from "ai";
 
-
+import { google } from '@ai-sdk/google';
 export const maxDuration = 30;
 export const Route = createFileRoute('/chat')({
   server: {
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/chat')({
 
         const result = streamText({
           // Using Vercel AI Gateway default. Fast, safe default model.
-          model: "google/gemini-2.5-flash",
+          model: google("gemini-2.5-flash-lite"),
           prompt,
 
           maxOutputTokens: 1200,
