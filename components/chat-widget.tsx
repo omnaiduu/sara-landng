@@ -7,11 +7,11 @@ import { useState, useRef, useEffect } from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import { Button } from "./ui/button"
-import { Card } from "./ui/card"
+
 import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { MessageCircle, X, Send, Sparkles } from "lucide-react"
-
+import { Response } from '@/components/ai-elements/response';
 function ChatBubble({
   role,
   children,
@@ -219,7 +219,7 @@ export default function ChatWidget() {
                   {messages.map((m) => (
                     <ChatBubble key={m.id} role={m.role}>
                       {m.parts.map((part, idx) => {
-                        if (part.type === "text") return <div key={idx}>{part.text}</div>
+                        if (part.type === "text") return <Response key={idx}>{part.text}</Response>
                         return null
                       })}
                     </ChatBubble>
