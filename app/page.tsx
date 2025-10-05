@@ -57,8 +57,8 @@ export default function App() {
   const services = [
     {
       title: "Design Essentials",
-      price: "₹700+",
-      period: "/design",
+      price: "Design starting from Rs 700/- and above",
+      period: "",
       desc: "Graphics, logos, and print-ready content for your brand.",
       features: [
         "Logos: ₹3,500 onwards (Typography Logo (Wordmark / Lettermark): Clean, elegant, and text-focused logos. Perfect for brands wanting a modern and minimalistic identity. Cost: ₹3,500 – ₹5,000; Symbolic / Iconic Logo: Uses abstract or representative symbols to portray your brand. Simple yet memorable, scalable across mediums. Cost: ₹5,500 – ₹7,500; Combination Logo (Text + Symbol / Icon): The most versatile and widely used style. Balances text with a unique graphic element. Cost: ₹6,000 – ₹8,500; Emblem Logo: A classic design featuring symbols or text inside a badge/seal. Great for premium, heritage, or traditional brands. Cost: ₹8,000 – ₹10,000; Mascot Logo: Fun, character-driven logos to bring your brand to life. Suitable for cafes, entertainment, events, or youth-centric businesses. Cost: ₹7,500 – ₹10,000). Multiple design options and color variations. Final delivery format: PDF, PNG, JPG. Font styles and favicon. Up to 3 free design revisions. Total cost will depend on the type of logo.",
@@ -260,7 +260,7 @@ export default function App() {
 
             <p className="text-sm sm:text-base lg:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-prose mx-auto lg:mx-0">
               Expert social media management, custom logos, graphics, brochures, pitch decks, profiles, writing, and
-              websites from ₹18,000/month for SMM. SEO-optimized for engagement.
+              websites. SEO-optimized for engagement.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-8 sm:mb-12">
@@ -286,19 +286,7 @@ export default function App() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.4 }}
             >
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-                <span>No Setup Fees</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-                <span>Cancel Anytime</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-                <span>We Include GST</span>
-              </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
                 <span>Custom Quotes</span>
               </div>
@@ -389,7 +377,7 @@ export default function App() {
             <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">Flexible options for growth.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {services.map((service, idx) => (
               <motion.div
                 key={idx}
@@ -412,7 +400,6 @@ export default function App() {
                         <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
                           {service.price}
                         </span>
-                        <span className="text-slate-600 ml-2 text-sm sm:text-base">{service.period}</span>
                       </div>
                       <p className="text-slate-600 text-sm sm:text-base">{service.desc}</p>
                     </div>
@@ -470,7 +457,7 @@ export default function App() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Instagram Posts with Carousels */}
             {igPosts.map((post, idx) => (
               <motion.div
@@ -488,7 +475,7 @@ export default function App() {
                             <img
                               src={slide || "/placeholder.svg"}
                               alt={`${post.title} slide ${sIdx + 1}`}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover block" // ensure no inline gaps
                               loading="lazy"
                             />
                           </div>
@@ -498,14 +485,14 @@ export default function App() {
                     <CarouselPrevious className="left-2 opacity-80 hover:opacity-100" />
                     <CarouselNext className="right-2 opacity-80 hover:opacity-100" />
                   </Carousel>
-                  <CardContent className="p-3 sm:p-4">
+                  <CardContent className="p-2 sm:p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-bold text-slate-900 text-sm sm:text-base line-clamp-1">{post.title}</h4>
                       <Badge variant="secondary" className="text-xs flex-shrink-0">
                         {post.slideCount} Slides
                       </Badge>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-3">{post.desc}</p>
+                    <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-2 sm:mb-3">{post.desc}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -518,22 +505,20 @@ export default function App() {
               transition={{ duration: 0.2 }}
             >
               <Card className="overflow-hidden hover:shadow-emerald-300/20 hover:shadow-lg transition-all duration-300 rounded-xl">
-                <div className="w-full h-auto aspect-video bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
+                <div className="relative w-full aspect-square bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
                   <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/H8Hs-dyTX3Q?si=BPLWt-eWr3O2d86m"
                     title="YouTube video player"
+                    src="https://www.youtube.com/embed/H8Hs-dyTX3Q?si=BPLWt-eWr3O2d86m"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    className="rounded-t-xl"
+                    className="absolute inset-0 w-full h-full block" // remove extra rounding that can misalign with overflow-hidden
                   />
                 </div>
-                <CardContent className="p-3 sm:p-4">
+                <CardContent className="p-2 sm:p-4">
                   <h4 className="font-bold text-slate-900 mb-2 text-sm sm:text-base">Samaroh Goa Podcast</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mb-3">
+                  <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3">
                     Edited long-form content example showcasing our podcast production capabilities.
                   </p>
                 </CardContent>
@@ -546,22 +531,20 @@ export default function App() {
               transition={{ duration: 0.2 }}
             >
               <Card className="overflow-hidden hover:shadow-emerald-300/20 hover:shadow-lg transition-all duration-300 rounded-xl">
-                <div className="w-full h-auto aspect-video bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
+                <div className="relative w-full aspect-square bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
                   <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/VGCFW61npjE?si=DLSByRyyAylMsgXM"
                     title="YouTube video player"
+                    src="https://www.youtube.com/embed/VGCFW61npjE?si=DLSByRyyAylMsgXM"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    className="rounded-t-xl"
+                    className="absolute inset-0 w-full h-full block"
                   />
                 </div>
-                <CardContent className="p-3 sm:p-4">
+                <CardContent className="p-2 sm:p-4">
                   <h4 className="font-bold text-slate-900 mb-2 text-sm sm:text-base">Samaroh Goa Podcast</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mb-3">
+                  <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3">
                     Edited long-form content example showcasing our podcast production capabilities.
                   </p>
                 </CardContent>
@@ -714,7 +697,6 @@ export default function App() {
 
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-800">
             <p className="text-slate-400 mb-4 md:mb-0">&copy; 2025 Sara Creations. All rights reserved.</p>
-            <p className="text-slate-400 mb-4 md:mb-0 text-sm">GST included in all quotes</p>
             <div className="flex gap-8">
               <a href="#" className="text-slate-400 hover:text-emerald-400 transition-colors">
                 Contact
