@@ -219,7 +219,7 @@ export default function ChatWidget() {
                   {messages.map((m) => (
                     <ChatBubble key={m.id} role={m.role}>
                       {m.parts.map((part, idx) => {
-                        if (part.type === "text") return <Response key={idx}>{part.text}</Response>
+                        if (part.type === "text") return <Response key={`response-${idx}`}>{part.text}</Response>
                         return null
                       })}
                     </ChatBubble>
