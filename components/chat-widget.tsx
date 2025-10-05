@@ -94,7 +94,7 @@ export default function ChatWidget() {
 
               <div
 
-                className="px-4 py-4 h-[calc(85vh-180px)] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-emerald-50/30"
+                className="px-4 py-4 h-[calc(85vh-180px)]  space-y-4 bg-gradient-to-b from-transparent to-emerald-50/30"
               >
                 {messages.length === 0 && (
                   <div className="flex flex-col items-center justify-center h-full text-center py-12">
@@ -109,12 +109,12 @@ export default function ChatWidget() {
                 )}
 
 
-                <Conversation className="relative w-full" style={{ height: '500px' }}>
+                <Conversation >
                   <ConversationContent>
                     {messages.map((m) => (
                       <ChatBubble key={m.id} role={m.role}>
                         {m.parts.map((part, idx) => {
-                          if (part.type === "text") return <div key={idx}>{part.text}</div>
+                          if (part.type === "text") return <Response key={idx}>{part.text}</Response>
                           return null
                         })}
                       </ChatBubble>
@@ -217,7 +217,7 @@ export default function ChatWidget() {
 
                 <div
 
-                  className="flex-1 px-5 py-4 overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-emerald-50/20"
+                  className="flex-1 px-5 py-4  space-y-4 bg-gradient-to-b from-transparent to-emerald-50/20"
                 >
                   {messages.length === 0 && (
                     <div className="flex flex-col items-center justify-center h-full text-center py-12">
@@ -231,12 +231,12 @@ export default function ChatWidget() {
                     </div>
                   )}
 
-                  <Conversation className="relative w-full" style={{ height: '500px' }}>
+                  <Conversation >
                     <ConversationContent>
                       {messages.map((m) => (
                         <ChatBubble key={m.id} role={m.role}>
                           {m.parts.map((part, idx) => {
-                            if (part.type === "text") return <div key={idx}>{part.text}</div>
+                            if (part.type === "text") return <Response key={idx}>{part.text}</Response>
                             return null
                           })}
                         </ChatBubble>
