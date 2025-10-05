@@ -10,6 +10,9 @@ import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { MessageCircle, X, Send, Sparkles } from "lucide-react"
 import { Response } from "@/src/components/ai-elements/response"
+
+
+import { google } from '@ai-sdk/google';
 import {
   Conversation,
   ConversationContent,
@@ -109,8 +112,8 @@ export default function ChatWidget() {
                 )}
 
 
-                <Conversation >
-                  <ConversationContent>
+                <Conversation className="h-full">
+                  <ConversationContent className="space-y-4">
                     {messages.map((m) => (
                       <ChatBubble key={m.id} role={m.role}>
                         {m.parts.map((part, idx) => {
@@ -188,12 +191,12 @@ export default function ChatWidget() {
         <>
           {open && (
             <div
-              className="w-[420px] h-[600px] shadow-2xl border-2 bg-white animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-8 duration-300 rounded-2xl overflow-hidden flex flex-col justify-between"
+              className="w-[420px] h-[600px] shadow-2xl border-2 bg-white animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-8 duration-300 rounded-2xl  flex flex-col justify-between overflow-hidden "
               aria-label="Customer support chat"
             >
 
 
-              <div className="bg-gradient-to-b border-emerald-200  from-white to-emerald-50/30 flex flex-col justify-between h-full">
+              <div className="bg-gradient-to-b border-emerald-200  from-white to-emerald-50/30 flex flex-col justify-between h-full overflow-y-hidden">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg">
@@ -215,54 +218,52 @@ export default function ChatWidget() {
                   </Button>
                 </div>
 
-                <div
 
-                  className="flex-1 px-5 py-4  space-y-4 bg-gradient-to-b from-transparent to-emerald-50/20"
-                >
-                  {messages.length === 0 && (
-                    <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center mb-4 shadow-lg">
-                        <MessageCircle className="w-10 h-10 text-emerald-600" />
+                {messages.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-full text-center py-12">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center mb-4 shadow-lg">
+                      <MessageCircle className="w-10 h-10 text-emerald-600" />
+                    </div>
+                    <p className="text-base font-semibold text-slate-800 mb-2">Welcome to Sara Creations!</p>
+                    <p className="text-sm text-slate-600 max-w-sm leading-relaxed">
+                      Ask me about our services, pricing, portfolio, or anything else you'd like to know. I'm here to help! ✨
+                    </p>
+                  </div>
+                )}
+
+                <Conversation className="h-full  ">
+                  <ConversationContent className="space-y-4 ">
+                    {messages.map((m) => (
+                      <ChatBubble key={m.id} role={m.role}>
+                        {m.parts.map((part, idx) => {
+                          if (part.type === "text") return <Response key={idx}>{part.text}</Response>
+                          return null
+                        })}
+                      </ChatBubble>
+                    ))}
+                    {status === "streaming" && (
+                      <div className="flex items-center gap-2 text-sm text-emerald-600">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></span>
+                        </div>
+                        <span>Sara is typing...</span>
                       </div>
-                      <p className="text-base font-semibold text-slate-800 mb-2">Welcome to Sara Creations!</p>
-                      <p className="text-sm text-slate-600 max-w-sm leading-relaxed">
-                        Ask me about our services, pricing, portfolio, or anything else you'd like to know. I'm here to help! ✨
-                      </p>
-                    </div>
-                  )}
-
-                  <Conversation >
-                    <ConversationContent>
-                      {messages.map((m) => (
-                        <ChatBubble key={m.id} role={m.role}>
-                          {m.parts.map((part, idx) => {
-                            if (part.type === "text") return <Response key={idx}>{part.text}</Response>
-                            return null
-                          })}
-                        </ChatBubble>
-                      ))}
-                    </ConversationContent>
-                    <ConversationScrollButton />
-                  </Conversation>
-
-
-                  {status === "streaming" && (
-                    <div className="flex items-center gap-2 text-sm text-emerald-600">
-                      <div className="flex gap-1">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></span>
+                    )}
+                    {error && (
+                      <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                        Oops! Something went wrong. Please try again.
                       </div>
-                      <span>Sara is typing...</span>
-                    </div>
-                  )}
+                    )}
+                  </ConversationContent>
 
-                  {error && (
-                    <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-                      Oops! Something went wrong. Please try again.
-                    </div>
-                  )}
-                </div>
+                  <ConversationScrollButton />
+                </Conversation>
+
+
+
+
 
                 <form
                   onSubmit={onSubmit}
@@ -289,6 +290,7 @@ export default function ChatWidget() {
                   </Button>
                 </form>
               </div>
+
 
 
 
