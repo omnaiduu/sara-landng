@@ -1,24 +1,27 @@
+import { createFileRoute } from '@tanstack/react-router'
 import {
-  consumeStream,
-  convertToModelMessages,
-  streamText,
-  type UIMessage,
+    consumeStream,
+    convertToModelMessages,
+    streamText,
+    type UIMessage,
 } from "ai";
 
 export const maxDuration = 30;
+export const Route = createFileRoute('/chat')({
+    server: {
+        handlers: {
+            POST: async ({ request: req }) => {
+                const { messages }: { messages: UIMessage[] } = await req.json();
 
-export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+                const prompt = convertToModelMessages(messages);
 
-  const prompt = convertToModelMessages(messages);
-
-  const result = streamText({
-    // Using Vercel AI Gateway default. Fast, safe default model.
-    model: "openai/gpt-5-mini",
-    prompt,
-    abortSignal: req.signal,
-    maxOutputTokens: 1200,
-    system: `
+                const result = streamText({
+                    // Using Vercel AI Gateway default. Fast, safe default model.
+                    model: "openai/gpt-5-mini",
+                    prompt,
+                    abortSignal: req.signal,
+                    maxOutputTokens: 1200,
+                    system: `
     Your a helpfull support assistant from sara creations. you neeed answere question based on only the given information to you
 use markdown formatting always.. if the question is not related to the given information politely say "I'm sorry, but I can only assist with questions related to Sara Creations and its services." Do not make up any answers. if the question is not related to sara creations or its services politely say "I'm sorry, but I can only assist with questions related to Sara Creations and its services."
 
@@ -168,9 +171,16 @@ const benefits = [
     },
   ]
     `,
-  });
+                });
 
-  return result.toUIMessageStreamResponse({
-    consumeSseStream: consumeStream,
-  });
+                return result.toUIMessageStreamResponse({
+                    consumeSseStream: consumeStream,
+                });
+            }
+        }
+    }
+})
+
+function RouteComponent() {
+    return <div>Hello "/chat"!</div>
 }

@@ -1,5 +1,4 @@
-"use client"
-
+import { createFileRoute } from "@tanstack/react-router"
 import { motion, type Variants } from "framer-motion"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -7,8 +6,13 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Target, BarChart3, Zap, ArrowRight, Star, CheckCircle, Users, Instagram, Youtube } from "lucide-react"
+import ChatWidget from "@/components/chat-widget"
 
-export default function App() {
+export const Route = createFileRoute("/")({
+  component: App,
+})
+
+function App() {
   const sectionVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -23,11 +27,11 @@ export default function App() {
   }
 
   const childVariants: Variants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95 }, // added scale for zoom-in effect
+    hidden: { opacity: 0, y: 15, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1, // added scale for zoom-in effect
+      scale: 1,
       transition: {
         duration: 0.2,
         ease: "easeOut",
@@ -40,17 +44,17 @@ export default function App() {
     {
       icon: Target,
       title: "Custom Content Creation",
-      desc: "Tailored plans with video reels, static posts, and carousels per month, including SEO, free festive stories, and seamless multi-platform posting to boost your engagement.", // removed prices, made more engaging
+      desc: "Tailored plans with video reels, static posts, and carousels per month, including SEO, free festive stories, and seamless multi-platform posting to boost your engagement.",
     },
     {
       icon: BarChart3,
       title: "Design & Editing Excellence",
-      desc: "Logos and graphics with expert revisions; from single posts to banners, brochures, pitch decks, profiles, and content writing for a polished brand identity.", // removed prices, made more benefit-focused
+      desc: "Logos and graphics with expert revisions; from single posts to banners, brochures, pitch decks, profiles, and content writing for a polished brand identity.",
     },
     {
       icon: Zap,
       title: "Website Solutions",
-      desc: "Custom 4-page sites or full e-commerce setups with hosting, domain, SEO, data compilation, and tailored features for seamless online presence.", // removed prices, made more attractive
+      desc: "Custom 4-page sites or full e-commerce setups with hosting, domain, SEO, data compilation, and tailored features for seamless online presence.",
     },
   ]
 
@@ -227,7 +231,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white overflow-x-hidden">
-      {/* Hero Section */}
+      {/* Hero Section */}<ChatWidget />
       <motion.section
         className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-12 py-12 sm:py-20 lg:py-28"
         variants={sectionVariants}
