@@ -10,7 +10,12 @@ import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { MessageCircle, X, Send, Sparkles } from "lucide-react"
 import { Response } from "@/src/components/ai-elements/response"
-
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from '@/components/ai-elements/conversation';
 function ChatBubble({
   role,
   children,
@@ -39,16 +44,14 @@ function ChatBubble({
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+
   const isMobile = useIsMobile()
 
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/chat" }),
   })
 
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })
-  }, [messages])
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -90,7 +93,7 @@ export default function ChatWidget() {
               </DrawerHeader>
 
               <div
-                ref={scrollRef}
+
                 className="px-4 py-4 h-[calc(85vh-180px)] overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-emerald-50/30"
               >
                 {messages.length === 0 && (
@@ -105,14 +108,21 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                {messages.map((m) => (
-                  <ChatBubble key={m.id} role={m.role}>
-                    {m.parts.map((part, idx) => {
-                      if (part.type === "text") return <div key={idx}>{part.text}</div>
-                      return null
-                    })}
-                  </ChatBubble>
-                ))}
+
+                <Conversation className="relative w-full" style={{ height: '500px' }}>
+                  <ConversationContent>
+                    {messages.map((m) => (
+                      <ChatBubble key={m.id} role={m.role}>
+                        {m.parts.map((part, idx) => {
+                          if (part.type === "text") return <div key={idx}>{part.text}</div>
+                          return null
+                        })}
+                      </ChatBubble>
+                    ))}
+                  </ConversationContent>
+                  <ConversationScrollButton />
+                </Conversation>
+
 
                 {status === "streaming" && (
                   <div className="flex items-center gap-2 text-xs text-emerald-600">
@@ -206,7 +216,7 @@ export default function ChatWidget() {
                 </div>
 
                 <div
-                  ref={scrollRef}
+
                   className="flex-1 px-5 py-4 overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-emerald-50/20"
                 >
                   {messages.length === 0 && (
@@ -221,15 +231,20 @@ export default function ChatWidget() {
                     </div>
                   )}
 
-                  {messages.map((m) => (
-                    <ChatBubble key={m.id} role={m.role}>
-                      {m.parts.map((part, idx) => {
-                        if (part.type === "text") return <Response key={idx}>{part.text}</Response>
+                  <Conversation className="relative w-full" style={{ height: '500px' }}>
+                    <ConversationContent>
+                      {messages.map((m) => (
+                        <ChatBubble key={m.id} role={m.role}>
+                          {m.parts.map((part, idx) => {
+                            if (part.type === "text") return <div key={idx}>{part.text}</div>
+                            return null
+                          })}
+                        </ChatBubble>
+                      ))}
+                    </ConversationContent>
+                    <ConversationScrollButton />
+                  </Conversation>
 
-                        return null
-                      })}
-                    </ChatBubble>
-                  ))}
 
                   {status === "streaming" && (
                     <div className="flex items-center gap-2 text-sm text-emerald-600">
