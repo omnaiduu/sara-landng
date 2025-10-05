@@ -57,7 +57,7 @@ export default function App() {
   const services = [
     {
       title: "Design Essentials",
-      price: "Design starting from Rs 700/- and above",
+      price: "₹700 and above",
       period: "",
       desc: "Graphics, logos, and print-ready content for your brand.",
       features: [
@@ -86,7 +86,7 @@ export default function App() {
     },
     {
       title: "Podcast Production",
-      price: "₹2,000+",
+      price: "₹2,000 and above",
       period: "/episode",
       desc: "Professional editing and production for podcasts, tutorials, and discussions. Editing of long form content such as podcasts, tutorials, discussions etc.—charged separately from SMM.",
       features: [
@@ -98,7 +98,7 @@ export default function App() {
     },
     {
       title: "Website Pro",
-      price: "₹25,000+",
+      price: "₹25,000 and above",
       period: "/project",
       desc: "Custom websites with hosting and domain included for first year.",
       features: [
@@ -229,7 +229,7 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white overflow-x-hidden">
       {/* Hero Section */}
       <motion.section
-        className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32"
+        className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-12 py-12 sm:py-20 lg:py-28"
         variants={sectionVariants}
         initial="hidden"
         animate="visible"
@@ -281,7 +281,7 @@ export default function App() {
             </div>
 
             <motion.div
-              className="grid grid-cols-2 lg:flex lg:items-center lg:justify-center lg:justify-start gap-3 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-slate-600"
+              className="flex flex-col items-center lg:flex-row lg:justify-start gap-3 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-slate-600"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.4 }}
@@ -334,8 +334,9 @@ export default function App() {
                 variants={childVariants}
                 whileHover={{ scale: 1.02, y: -5 }}
                 transition={{ duration: 0.2 }}
+                className="h-full"
               >
-                <Card className="p-6 sm:p-8 h-auto min-h-[300px] shadow-md hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-emerald-300">
+                <Card className="p-6 sm:p-8 h-full flex flex-col shadow-md hover:shadow-xl transition-all duration-300 border-slate-200 hover:border-emerald-300">
                   <CardContent className="p-0">
                     <motion.div
                       className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4 sm:mb-6"
@@ -377,49 +378,57 @@ export default function App() {
             <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">Flexible options for growth.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 xl:grid-cols-4 z-10">
             {services.map((service, idx) => (
               <motion.div
                 key={idx}
                 variants={childVariants}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ y: -8 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="h-full z-10"
               >
                 <Card
-                  className={`p-6 sm:p-8 h-full relative ${service.popular ? "border-emerald-500 border-2 shadow-lg" : "border-slate-200"}`}
+                  className={`z-10 relative flex h-[600px] flex-col rounded-3xl border bg-white/90 px-6 py-8 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 ${service.popular
+                    ? "border-emerald-500/80 ring-4 ring-emerald-100"
+                    : "border-slate-200 hover:border-emerald-300"
+                    }`}
                 >
                   {service.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-emerald-500 hover:bg-emerald-600">
+                    <Badge className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-4 py-1 text-xs font-semibold text-white shadow-md z-10">
                       Most Popular
                     </Badge>
                   )}
-                  <CardContent className="p-0">
-                    <div className="text-center mb-6 sm:mb-8">
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">{service.title}</h3>
-                      <div className="flex items-baseline justify-center mb-4">
-                        <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
-                          {service.price}
-                        </span>
+                  <CardContent className="flex flex-1 flex-col gap-5 p-0 min-h-0">
+                    {/* Fixed Header */}
+                    <div className="flex-shrink-0 space-y-2 text-center">
+                      <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">{service.title}</h3>
+                      <div className="flex flex-wrap items-baseline justify-center gap-x-2 text-slate-900">
+                        <span className="text-3xl font-bold sm:text-4xl xl:text-5xl">{service.price}</span>
+                        {service.period && (
+                          <span className="text-sm font-medium text-slate-500 sm:text-base">{service.period}</span>
+                        )}
                       </div>
-                      <p className="text-slate-600 text-sm sm:text-base">{service.desc}</p>
+                      <p className="text-sm text-slate-600 sm:text-base">{service.desc}</p>
                     </div>
 
-                    <div className="max-h-48 sm:max-h-64 overflow-y-auto mb-6 sm:mb-8 relative">
-                      <ul className="space-y-2 sm:space-y-3">
+                    {/* Scrollable Features */}
+                    <div className="flex-1 min-h-0 rounded-2xl border border-emerald-100/60 bg-emerald-50/30 p-4 overflow-hidden">
+                      <ul className="h-full flex flex-col gap-2.5 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-emerald-300 scrollbar-track-emerald-50 hover:scrollbar-thumb-emerald-400">
                         {service.features.map((feature, featureIdx) => (
-                          <li key={featureIdx} className="flex items-start gap-2 sm:gap-3">
-                            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                            <span className="text-xs sm:text-sm text-slate-700 leading-relaxed line-clamp-3">
-                              {feature}
-                            </span>
+                          <li key={featureIdx} className="flex items-start gap-2 text-left">
+                            <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+                              <CheckCircle className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="text-xs leading-relaxed text-slate-700 sm:text-sm">{feature}</span>
                           </li>
                         ))}
                       </ul>
-                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
                     </div>
 
+                    {/* Fixed Button */}
                     <Button
-                      className={`w-full text-sm sm:text-base py-3 sm:py-4 ${service.popular ? "bg-emerald-600 hover:bg-emerald-700" : "bg-slate-900 hover:bg-slate-800"}`}
+                      className={`flex-shrink-0 w-full rounded-full text-sm sm:text-base py-3 sm:py-4 font-semibold ${service.popular ? "bg-emerald-600 hover:bg-emerald-700" : "bg-slate-900 hover:bg-slate-800"
+                        }`}
                       size="lg"
                     >
                       Get Started
@@ -453,99 +462,129 @@ export default function App() {
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">See Our Work</h2>
             <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
-              Explore our Instagram reels and YouTube videos for Samaroh Goa.
+              Explore our creative designs and social media content.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {/* Instagram Posts with Carousels */}
             {igPosts.map((post, idx) => (
               <motion.div
                 key={idx}
                 variants={childVariants}
-                whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(16, 185, 129, 0.1)" }}
-                transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.015, boxShadow: "0 24px 40px -16px rgba(16, 185, 129, 0.25)" }}
+                transition={{ duration: 0.25 }}
               >
-                <Card className="group overflow-hidden hover:shadow-emerald-300/20 hover:shadow-lg transition-all duration-300 rounded-xl">
+                <Card className="group flex flex-col overflow-hidden rounded-2xl border border-emerald-200/60 bg-white/90 py-0 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-emerald-300/40">
                   <Carousel className="w-full">
                     <CarouselContent>
                       {post.slides.map((slide, sIdx) => (
                         <CarouselItem key={sIdx}>
-                          <div className="aspect-square bg-gradient-to-br from-emerald-100 to-blue-100 flex items-center justify-center overflow-hidden">
+                          <div className="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] bg-gradient-to-br from-emerald-100/80 to-blue-100/80 flex items-center justify-center overflow-hidden">
                             <img
                               src={slide || "/placeholder.svg"}
                               alt={`${post.title} slide ${sIdx + 1}`}
-                              className="w-full h-full object-cover block" // ensure no inline gaps
+                              className="absolute inset-0 h-full w-full object-cover"
                               loading="lazy"
                             />
                           </div>
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    <CarouselPrevious className="left-2 opacity-80 hover:opacity-100" />
-                    <CarouselNext className="right-2 opacity-80 hover:opacity-100" />
+                    <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
+                    <CarouselNext className="right-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
                   </Carousel>
-                  <CardContent className="p-2 sm:p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-slate-900 text-sm sm:text-base line-clamp-1">{post.title}</h4>
-                      <Badge variant="secondary" className="text-xs flex-shrink-0">
+                  <CardContent className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-sm font-semibold text-slate-900 sm:text-base line-clamp-1">{post.title}</h4>
+                      <Badge variant="secondary" className="flex-shrink-0 text-[0.7rem] sm:text-xs">
                         {post.slideCount} Slides
                       </Badge>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 mb-2 sm:mb-3">{post.desc}</p>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">{post.desc}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </motion.section>
 
-            {/* YouTube Video Embeds */}
+      {/* Podcast & Video Production Section */}
+      <motion.section
+        className="py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-12 bg-slate-50"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div className="text-center mb-12 sm:mb-16" variants={childVariants}>
+            <Badge variant="outline" className="mb-4">
+              Video Production
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+              Podcast & Long-Form Content
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
+              Professional editing and production for Samaroh Goa podcast series.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-5xl mx-auto">
+            {/* YouTube Video 1 */}
             <motion.div
               variants={childVariants}
-              whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(16, 185, 129, 0.1)" }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.015, boxShadow: "0 24px 40px -16px rgba(16, 185, 129, 0.25)" }}
+              transition={{ duration: 0.25 }}
             >
-              <Card className="overflow-hidden hover:shadow-emerald-300/20 hover:shadow-lg transition-all duration-300 rounded-xl">
-                <div className="relative w-full aspect-square bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
+              <Card className="flex flex-col overflow-hidden rounded-2xl border border-emerald-200/60 bg-white/90 py-0 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-emerald-300/40">
+                <div className="relative w-full aspect-video bg-gradient-to-br from-emerald-100/80 to-blue-100/80">
                   <iframe
-                    title="YouTube video player"
+                    title="Samaroh Goa Podcast Episode 2"
                     src="https://www.youtube.com/embed/H8Hs-dyTX3Q?si=BPLWt-eWr3O2d86m"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    className="absolute inset-0 w-full h-full block" // remove extra rounding that can misalign with overflow-hidden
+                    className="absolute inset-0 h-full w-full"
                   />
                 </div>
-                <CardContent className="p-2 sm:p-4">
-                  <h4 className="font-bold text-slate-900 mb-2 text-sm sm:text-base">Samaroh Goa Podcast</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3">
-                    Edited long-form content example showcasing our podcast production capabilities.
+                <CardContent className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+                  <h4 className="text-base font-semibold text-slate-900 sm:text-lg">
+                    Sara Talks | Episode 02 | Podcast Interview
+                  </h4>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                    Full podcast editing, compilation, and design for long-form content. SEO-optimized for YouTube platform.
                   </p>
                 </CardContent>
               </Card>
             </motion.div>
 
+            {/* YouTube Video 2 */}
             <motion.div
               variants={childVariants}
-              whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(16, 185, 129, 0.1)" }}
-              transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.015, boxShadow: "0 24px 40px -16px rgba(16, 185, 129, 0.25)" }}
+              transition={{ duration: 0.25 }}
             >
-              <Card className="overflow-hidden hover:shadow-emerald-300/20 hover:shadow-lg transition-all duration-300 rounded-xl">
-                <div className="relative w-full aspect-square bg-gradient-to-br from-emerald-100 to-blue-100 overflow-hidden">
+              <Card className="flex flex-col overflow-hidden rounded-2xl border border-emerald-200/60 bg-white/90 py-0 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-emerald-300/40">
+                <div className="relative w-full aspect-video bg-gradient-to-br from-emerald-100/80 to-blue-100/80">
                   <iframe
-                    title="YouTube video player"
+                    title="Samaroh Goa Podcast Episode 1"
                     src="https://www.youtube.com/embed/VGCFW61npjE?si=DLSByRyyAylMsgXM"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    className="absolute inset-0 w-full h-full block"
+                    className="absolute inset-0 h-full w-full"
                   />
                 </div>
-                <CardContent className="p-2 sm:p-4">
-                  <h4 className="font-bold text-slate-900 mb-2 text-sm sm:text-base">Samaroh Goa Podcast</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3">
-                    Edited long-form content example showcasing our podcast production capabilities.
+                <CardContent className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+                  <h4 className="text-base font-semibold text-slate-900 sm:text-lg">
+                    Sara Talks | Episode 01 | Podcast Interview
+                  </h4>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                    Professional podcast production showcasing our editing expertise and attention to detail for long-form interviews.
                   </p>
                 </CardContent>
               </Card>
