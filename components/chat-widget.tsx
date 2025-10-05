@@ -15,7 +15,7 @@ import {
   ConversationContent,
   ConversationEmptyState,
   ConversationScrollButton,
-} from '@/components/ai-elements/conversation';
+} from '@/src/components/ai-elements/conversation';
 function ChatBubble({
   role,
   children,
