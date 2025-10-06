@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { motion, type Variants } from "framer-motion"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -13,6 +13,13 @@ export const Route = createFileRoute("/")({
 })
 
 function App() {
+
+  const scrollTosection = (sectionId: string) => {
+    const ele = document.getElementById(sectionId);
+    if (ele) {
+      ele.scrollIntoView({ behavior: 'smooth', block: "start" });
+    }
+  }
   const sectionVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -130,7 +137,7 @@ function App() {
       ],
       desc: "Sara Creations designed a stunning catalogue that's as fabulous as their services! Swipe to see the results.",
       slideCount: 7,
-      igLink: "https://www.instagram.com/p/DDJhJJJSJJJ/",
+      igLink: "https://www.instagram.com/p/DFKxliAMSvy/?igsh=ODNnbG9zZmUwcHc4",
     },
     {
       title: "Today's Brand Highlight🕸️",
@@ -143,7 +150,7 @@ function App() {
       ],
       desc: "Sara Creations crafted a timeless logo for Spider Net Solutions, combining old-school charm with secure network elements to reflect trust and reliability.",
       slideCount: 5,
-      igLink: "https://www.instagram.com/p/DDJhJJJSJJJ/",
+      igLink: "https://www.instagram.com/p/DFZWmVbv4J_/?img_index=1",
     },
     {
       title: "Crafting milestones, one design at a time! 🌟",
@@ -157,7 +164,7 @@ function App() {
       ],
       desc: "Sara Creations proudly designed the logo for Sevarat, an inspiring organization dedicated to enriching the lives of senior citizens. This special logo represents their journey toward a remarkable Limca Book of Records achievement! 🎨✨",
       slideCount: 6,
-      igLink: "https://www.instagram.com/p/DDJhJJJSJJJ/",
+      igLink: "https://www.instagram.com/p/DFrYK7foIjo/?igsh=MTg3Z2F4eHo2OWF6Zg%3D%3D",
     },
     {
       title: "Brand Spotlight: Amber Teak",
@@ -171,7 +178,7 @@ function App() {
       ],
       desc: "When it comes to budget-friendly décor that elevates your interiors, Amber Teak is the name to trust! With years of experience and a loyal clientele across Goa, they blend quality, style, and affordability to craft spaces that feel like home. 🏡💫 Sara Creations had the pleasure of designing their catalogue, bringing their stunning range of décor to life with a touch of creativity! ✨",
       slideCount: 6,
-      igLink: "https://www.instagram.com/p/DDJhJJJSJJJ/",
+      igLink: "https://www.instagram.com/p/DF9ZutspSJL/?igsh=eHExcmVqamF4ZWJu&img_index=2",
     },
   ]
 
@@ -269,6 +276,7 @@ function App() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-8 sm:mb-12">
               <Button
+                onClick={() => window.open('tel:+919823572027', '_self')}
                 size="lg"
                 className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto"
               >
@@ -276,6 +284,7 @@ function App() {
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
               <Button
+                onClick={() => scrollTosection('portfolio')}
                 variant="outline"
                 size="lg"
                 className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg border-slate-300 bg-transparent w-full sm:w-auto"
@@ -453,6 +462,7 @@ function App() {
 
       {/* Portfolio Section */}
       <motion.section
+        id="portfolio"
         className="py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-12"
         variants={sectionVariants}
         initial="hidden"
@@ -473,42 +483,44 @@ function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {/* Instagram Posts with Carousels */}
             {igPosts.map((post, idx) => (
-              <motion.div
-                key={idx}
-                variants={childVariants}
-                whileHover={{ scale: 1.015, boxShadow: "0 24px 40px -16px rgba(16, 185, 129, 0.25)" }}
-                transition={{ duration: 0.25 }}
-              >
-                <Card className="group flex flex-col overflow-hidden rounded-2xl border border-emerald-200/60 bg-white/90 py-0 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-emerald-300/40">
-                  <Carousel className="w-full">
-                    <CarouselContent>
-                      {post.slides.map((slide, sIdx) => (
-                        <CarouselItem key={sIdx}>
-                          <div className="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] bg-gradient-to-br from-emerald-100/80 to-blue-100/80 flex items-center justify-center overflow-hidden">
-                            <img
-                              src={slide || "/placeholder.svg"}
-                              alt={`${post.title} slide ${sIdx + 1}`}
-                              className="absolute inset-0 h-full w-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
-                    <CarouselNext className="right-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
-                  </Carousel>
-                  <CardContent className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
-                    <div className="flex items-center justify-between gap-3">
-                      <h4 className="text-sm font-semibold text-slate-900 sm:text-base line-clamp-1">{post.title}</h4>
-                      <Badge variant="secondary" className="flex-shrink-0 text-[0.7rem] sm:text-xs">
-                        {post.slideCount} Slides
-                      </Badge>
-                    </div>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">{post.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Link to={post.igLink} target="_blank" key={idx}>
+                <motion.div
+                  key={idx}
+                  variants={childVariants}
+                  whileHover={{ scale: 1.015, boxShadow: "0 24px 40px -16px rgba(16, 185, 129, 0.25)" }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <Card className="group flex flex-col overflow-hidden rounded-2xl border border-emerald-200/60 bg-white/90 py-0 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-emerald-300/40">
+                    <Carousel className="w-full">
+                      <CarouselContent>
+                        {post.slides.map((slide, sIdx) => (
+                          <CarouselItem key={sIdx}>
+                            <div className="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] bg-gradient-to-br from-emerald-100/80 to-blue-100/80 flex items-center justify-center overflow-hidden">
+                              <img
+                                src={slide || "/placeholder.svg"}
+                                alt={`${post.title} slide ${sIdx + 1}`}
+                                className="absolute inset-0 h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
+                      <CarouselNext className="right-4 top-1/2 -translate-y-1/2 opacity-85 backdrop-blur-sm hover:opacity-100" />
+                    </Carousel>
+                    <CardContent className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+                      <div className="flex items-center justify-between gap-3">
+                        <h4 className="text-sm font-semibold text-slate-900 sm:text-base line-clamp-1">{post.title}</h4>
+                        <Badge variant="secondary" className="flex-shrink-0 text-[0.7rem] sm:text-xs">
+                          {post.slideCount} Slides
+                        </Badge>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">{post.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>
@@ -706,7 +718,9 @@ function App() {
           <motion.div variants={childVariants}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">Ready to Elevate Your Brand?</h2>
             <p className="text-xl text-emerald-100 mb-8 leading-relaxed">Book a free consultation for custom quotes.</p>
-            <Button size="lg" className="bg-white text-emerald-600 hover:bg-slate-100 px-8 py-5 text-lg font-semibold">
+            <Button onClick={() => {
+              window.open('tel:+919823572027', '_self')
+            }} size="lg" className="bg-white text-emerald-600 hover:bg-slate-100 px-8 py-5 text-lg font-semibold">
               Book Now
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
@@ -741,7 +755,7 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-800">
             <p className="text-slate-400 mb-4 md:mb-0">&copy; 2025 Sara Creations. All rights reserved.</p>
             <div className="flex gap-8">
-              <a href="#" className="text-slate-400 hover:text-emerald-400 transition-colors">
+              <a href="tel:+919823572027" className="text-slate-400 hover:text-emerald-400 transition-colors">
                 Contact
               </a>
             </div>

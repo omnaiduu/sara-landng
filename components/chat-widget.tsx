@@ -5,13 +5,10 @@ import { useState, useRef, useEffect } from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import { Button } from "./ui/button"
-// sara creation
 import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { MessageCircle, X, Send, Sparkles } from "lucide-react"
 import { Response } from "@/src/components/ai-elements/response"
-
-
 
 import {
   Conversation,
@@ -19,6 +16,7 @@ import {
   ConversationEmptyState,
   ConversationScrollButton,
 } from '@/src/components/ai-elements/conversation';
+
 function ChatBubble({
   role,
   children,
@@ -47,14 +45,13 @@ function ChatBubble({
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const isMobile = useIsMobile()
 
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/chat" }),
   })
-
-
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -63,17 +60,19 @@ export default function ChatWidget() {
     if (!input?.trim()) return
     sendMessage({ text: input.trim() })
     form.reset()
+    // Refocus input after sending
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
   }
 
   return (
-    <div className="fixed z-50 bottom-4 right-4 sm:bottom-6 sm:right-6 ">
+    <div className="fixed z-50 bottom-4 right-4 sm:bottom-6 sm:right-6">
       {isMobile ? (
         <>
           <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerContent className="flex flex-col justify-end h-full rounded-t-3xl bg-gradient-to-b from-emerald-50 to-white border-t-4 border-emerald-500">
-
-
-              <DrawerHeader className="flex flex-row items-center justify-between py-4 px-4 border-b border-emerald-100">
+            <DrawerContent className="flex flex-col h-[85vh] max-h-[85vh] rounded-t-3xl bg-gradient-to-b from-emerald-50 to-white border-t-4 border-emerald-500">
+              <DrawerHeader className="flex-shrink-0 flex flex-row items-center justify-between py-4 px-4 border-b border-emerald-100">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg">
                     <Sparkles className="w-5 h-5 text-white" />
@@ -95,12 +94,9 @@ export default function ChatWidget() {
                 </DrawerClose>
               </DrawerHeader>
 
-              <div
-
-                className="px-4 py-4 h-[calc(85vh-180px)]  space-y-4 bg-gradient-to-b from-transparent to-emerald-50/30"
-              >
+              <div className="flex-1 overflow-hidden flex flex-col">
                 {messages.length === 0 && (
-                  <div className="flex flex-col items-center justify-center h-full text-center py-12">
+                  <div className="flex flex-col items-center justify-center h-full text-center px-4 py-12">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center mb-4">
                       <MessageCircle className="w-8 h-8 text-emerald-600" />
                     </div>
@@ -111,8 +107,7 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-
-                <Conversation className="h-full">
+                <Conversation className="flex-1 px-4 py-4">
                   <ConversationContent className="space-y-4">
                     {messages.map((m) => (
                       <ChatBubble key={m.id} role={m.role}>
@@ -122,81 +117,76 @@ export default function ChatWidget() {
                         })}
                       </ChatBubble>
                     ))}
+                    {status === "streaming" && (
+                      <div className="flex items-center gap-2 text-xs text-emerald-600">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></span>
+                        </div>
+                        <span>Sara is typing...</span>
+                      </div>
+                    )}
+                    {error && (
+                      <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                        Oops! Something went wrong. Please try again.
+                      </div>
+                    )}
                   </ConversationContent>
                   <ConversationScrollButton />
                 </Conversation>
-
-
-                {status === "streaming" && (
-                  <div className="flex items-center gap-2 text-xs text-emerald-600">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]"></span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]"></span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></span>
-                    </div>
-                    <span>Sara is typing...</span>
-                  </div>
-                )}
-
-                {error && (
-                  <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-                    Oops! Something went wrong. Please try again.
-                  </div>
-                )}
               </div>
 
               <form
                 onSubmit={onSubmit}
-                className="flex items-center gap-2 px-4 py-4 border-t border-emerald-100 bg-white"
+                className="flex-shrink-0 flex items-center gap-2 px-4 py-4 border-t border-emerald-100 bg-white safe-area-bottom"
               >
                 <label htmlFor="message-mobile" className="sr-only">
                   Message
                 </label>
                 <Input
+                  ref={inputRef}
                   id="message-mobile"
                   name="message"
                   placeholder="Type your message..."
                   autoComplete="off"
-                  className="flex-1 rounded-xl border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500 bg-white"
+                  className="flex-1 rounded-xl border-emerald-200 focus:border-emerald-500 focus:ring-emerald-500 bg-white text-base"
                   disabled={status === "streaming"}
+                  type="text"
                 />
                 <Button
                   type="submit"
                   size="icon"
-                  className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 text-white hover:from-emerald-700 hover:to-emerald-800 shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="h-10 w-10 flex-shrink-0 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-700 text-white hover:from-emerald-700 hover:to-emerald-800 shadow-lg hover:shadow-xl transition-all duration-200"
                   disabled={status === "streaming"}
                 >
                   <Send className="w-5 h-5" />
                 </Button>
               </form>
-
             </DrawerContent>
 
-            {!open && <DrawerTrigger asChild>
-              <Button
-                onClick={() => setOpen(true)}
-                className="h-14 w-14 rounded-full shadow-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 text-white hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 ease-out hover:scale-110 active:scale-95 border-4 border-white"
-                aria-label="Open chat"
-                title="Chat with Sara"
-              >
-                <MessageCircle className="h-6 w-6" />
-              </Button>
-            </DrawerTrigger>
-
-            }
+            {!open && (
+              <DrawerTrigger asChild>
+                <Button
+                  onClick={() => setOpen(true)}
+                  className="h-14 w-14 rounded-full shadow-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 text-white hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 ease-out hover:scale-110 active:scale-95 border-4 border-white"
+                  aria-label="Open chat"
+                  title="Chat with Sara"
+                >
+                  <MessageCircle className="h-6 w-6" />
+                </Button>
+              </DrawerTrigger>
+            )}
           </Drawer>
-
         </>
       ) : (
         <>
           {open && (
             <div
-              className="w-[420px] h-[600px] shadow-2xl border-2 bg-white animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-8 duration-300 rounded-2xl  flex flex-col justify-between overflow-hidden "
+              className="w-[420px] h-[600px] shadow-2xl border-2 bg-white animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-8 duration-300 rounded-2xl flex flex-col justify-between overflow-hidden"
               aria-label="Customer support chat"
             >
-
-
-              <div className="bg-gradient-to-b border-emerald-200  from-white to-emerald-50/30 flex flex-col justify-between h-full overflow-y-hidden">
+              <div className="bg-gradient-to-b border-emerald-200 from-white to-emerald-50/30 flex flex-col justify-between h-full overflow-y-hidden">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg">
@@ -218,7 +208,6 @@ export default function ChatWidget() {
                   </Button>
                 </div>
 
-
                 {messages.length === 0 && (
                   <div className="flex flex-col items-center justify-center h-full text-center py-12">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center mb-4 shadow-lg">
@@ -231,8 +220,8 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                <Conversation className="h-full  ">
-                  <ConversationContent className="space-y-4 ">
+                <Conversation className="h-full">
+                  <ConversationContent className="space-y-4">
                     {messages.map((m) => (
                       <ChatBubble key={m.id} role={m.role}>
                         {m.parts.map((part, idx) => {
@@ -257,13 +246,8 @@ export default function ChatWidget() {
                       </div>
                     )}
                   </ConversationContent>
-
                   <ConversationScrollButton />
                 </Conversation>
-
-
-
-
 
                 <form
                   onSubmit={onSubmit}
@@ -290,10 +274,6 @@ export default function ChatWidget() {
                   </Button>
                 </form>
               </div>
-
-
-
-
             </div>
           )}
 
